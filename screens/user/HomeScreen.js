@@ -8,6 +8,8 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
+  Modal,
+  Pressable,
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,6 +25,7 @@ import { bindActionCreators } from "redux";
 import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { SliderBox } from "react-native-image-slider-box";
+import BannerCodeScanner from "./BannerCodeScanner";
 
 const category = [
   {
@@ -58,6 +61,10 @@ const HomeScreen = ({ navigation, route }) => {
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({});
   const [searchItems, setSearchItems] = useState([]);
+  const [dataSearch, setDataSearch] = useState([]);
+  const [scannedData, setScannedData] = useState("");
+  const [autoSearch, setAutoSearch] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const convertToJSON = (obj) => {
     try {
@@ -66,7 +73,16 @@ const HomeScreen = ({ navigation, route }) => {
       setUserInfo(obj);
     }
   };
-
+  const performSearch = (searchValue) => {
+    // Thực hiện tìm kiếm với giá trị searchValue
+    console.log("Performing search with:", searchValue);
+    // ...
+  };
+  const handleScanned = (data) => {
+    setModalVisible(false);
+    setScannedData(data); // Cập nhật giá trị quét
+    performSearch(data); // Gọi hàm tìm kiếm với giá trị quét
+  };
   const handleProductPress = (product) => {
     navigation.navigate("productdetail", { product: product });
   };
@@ -117,6 +133,25 @@ const HomeScreen = ({ navigation, route }) => {
     convertToJSON(user);
     fetchProduct();
   }, []);
+  useEffect(() => {
+    if (autoSearch && scannedData !== "") {
+      // Thực hiện tìm kiếm với dữ liệu đã quét
+      // ...
+      console.log("Performing search with:", scannedData);
+      const filteredItems = products.filter(
+        (item) =>
+          (item.title &&
+            item.title.toLowerCase().includes(searchValue.toLowerCase())) ||
+          (item.code &&
+            item.code.toLowerCase().indexOf(searchedText.toLowerCase()))
+      );
+      setFilteredProducts(filteredItems);
+
+      // Đặt autoSearch thành false để ngăn việc tìm kiếm liên tục
+      setAutoSearch(false);
+    }
+  }, [scannedData, autoSearch]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -127,7 +162,7 @@ const HomeScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         <View style={styles.topbarlogoContainer}>
           <Image source={easybuylogo} style={styles.logo} />
-          <Text style={styles.toBarText}>Jardo</Text>
+          <Text style={styles.toBarText}>FPOS</Text>
         </View>
         <TouchableOpacity
           style={styles.cartIconContainer}
@@ -147,7 +182,10 @@ const HomeScreen = ({ navigation, route }) => {
         <View style={styles.searchContainer}>
           <View style={styles.inputContainer}>
             <SearchableDropdown
-              onTextChange={(text) => console.log(text)}
+              onTextChange={(text) => {
+                setScannedData(text); // Cập nhật giá trị quét
+                performSearch(text); // Gọi hàm tìm kiếm khi giá trị quét thay đổi
+              }}
               onItemSelect={(item) => handleProductPress(item)}
               defaultIndex={0}
               containerStyle={{
@@ -180,15 +218,42 @@ const HomeScreen = ({ navigation, route }) => {
                 maxHeight: "100%",
               }}
               items={searchItems}
-              placeholder="Search..."
+              placeholder={scannedData !== "" ? scannedData : "Search..."}
               resetValue={false}
               underlineColorAndroid="transparent"
+              defaultInputValue={scannedData !== "" ? scannedData : "Hello"} // Đặt giá trị quét vào ô tìm kiếm
             />
             {/* <CustomInput radius={5} placeholder={"Search...."} /> */}
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.scanButton}>
-              <Text style={styles.scanButtonText}>Search</Text>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <BannerCodeScanner onScanned={handleScanned} />
+                    <Pressable
+                      style={styles.buttonClose}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Close</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Modal>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => setModalVisible(true)}
+              >
+                <Text style={styles.textStyle}>Scan</Text>
+              </Pressable>
             </TouchableOpacity>
           </View>
         </View>
@@ -340,10 +405,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "70%",
+    height: "35%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 2,
   },
   buttonContainer: {
     width: "20%",
@@ -450,5 +515,47 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: "bold",
     fontSize: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    height: "70%",
+    width: "90%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+    borderRadius: 20,
+    padding: 10,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
