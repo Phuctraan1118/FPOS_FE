@@ -62,8 +62,8 @@ const CategoriesScreen = ({ navigation, route }) => {
   };
   const category = [
     {
-      _id: "6417d1fef4a14efc88c07fda",
-      title: "Men",
+      _id: "6485572cdb3b9bfb1429fb89",
+      title: "Nước giải khát",
     },
     {
       _id: "6417d212f4a14efc88c07fdd",
@@ -72,7 +72,7 @@ const CategoriesScreen = ({ navigation, route }) => {
     {
       _id: "6417d21af4a14efc88c07fe0",
       title: "Kids",
-    }
+    },
   ];
   const [selectedTab, setSelectedTab] = useState(category[0]);
 

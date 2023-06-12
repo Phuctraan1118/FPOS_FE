@@ -25,8 +25,8 @@ import { SliderBox } from "react-native-image-slider-box";
 
 const category = [
   {
-    _id: "6417d1fef4a14efc88c07fda",
-    title: "Men",
+    _id: "6485572cdb3b9bfb1429fb89",
+    title: "Nước giải khát",
     image: require("../../assets/icons/men.png"),
   },
   {
@@ -155,7 +155,7 @@ const HomeScreen = ({ navigation, route }) => {
                 elevation: 5,
                 position: "absolute",
                 zIndex: 20,
-                top: -20,
+                top: -3,
                 maxHeight: 300,
                 backgroundColor: colors.light,
               }}
@@ -329,19 +329,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   searchContainer: {
-    marginTop: 10,
     padding: 10,
     width: "100%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
+    zIndex: 2,
   },
   inputContainer: {
     width: "70%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 2,
   },
   buttonContainer: {
     width: "20%",
