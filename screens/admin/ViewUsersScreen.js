@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -102,7 +103,7 @@ const ViewUsersScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <ProgressDialog visible={isloading} label={label} />
       <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
+      <SafeAreaView style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -117,7 +118,7 @@ const ViewUsersScreen = ({ navigation, route }) => {
         <TouchableOpacity disabled>
           <AntDesign name="user" size={25} color={colors.primary} />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <View style={styles.screenNameContainer}>
         <View>
           <Text style={styles.screenNameText}>View Users</Text>

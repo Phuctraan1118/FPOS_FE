@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { colors, network } from "../../constants";
@@ -119,7 +120,7 @@ const EditProductScreen = ({ navigation, route }) => {
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
       <ProgressDialog visible={isloading} label={label} />
-      <View style={styles.TopBarContainer}>
+      <SafeAreaView style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
             // navigation.replace("viewproduct", { authUser: authUser });
@@ -132,7 +133,7 @@ const EditProductScreen = ({ navigation, route }) => {
             color={colors.muted}
           />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <View style={styles.screenNameContainer}>
         <View>
           <Text style={styles.screenNameText}>Edit Product</Text>

@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import { colors, network } from "../../constants";
@@ -106,9 +107,7 @@ const AddProductScreen = ({ navigation, route }) => {
       redirect: "follow",
     };
 
-    fetch( network.serverip + "/photos/upload",
-      ImageRequestOptions
-    )
+    fetch(network.serverip + "/photos/upload", ImageRequestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
@@ -192,7 +191,7 @@ const AddProductScreen = ({ navigation, route }) => {
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
       <ProgressDialog visible={isloading} label={"Adding ..."} />
-      <View style={styles.TopBarContainer}>
+      <SafeAreaView style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
             // navigation.replace("viewproduct", { authUser: authUser });
@@ -205,7 +204,7 @@ const AddProductScreen = ({ navigation, route }) => {
             color={colors.muted}
           />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <View style={styles.screenNameContainer}>
         <View>
           <Text style={styles.screenNameText}>Add Product</Text>

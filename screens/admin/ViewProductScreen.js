@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -135,7 +136,7 @@ const ViewProductScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <ProgressDialog visible={isloading} label={label} />
       <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
+      <SafeAreaView style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -154,7 +155,7 @@ const ViewProductScreen = ({ navigation, route }) => {
         >
           <AntDesign name="plussquare" size={30} color={colors.muted} />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <View style={styles.screenNameContainer}>
         <View>
           <Text style={styles.screenNameText}>View Product</Text>

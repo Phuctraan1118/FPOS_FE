@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -120,7 +121,7 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <ProgressDialog visible={isloading} label={label} />
       <StatusBar></StatusBar>
-      <View style={styles.TopBarContainer}>
+      <SafeAreaView style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -132,7 +133,7 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
             color={colors.muted}
           />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <View style={styles.screenNameContainer}>
         <View>
           <Text style={styles.screenNameText}>Order Details</Text>

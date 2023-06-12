@@ -7,6 +7,7 @@ import {
   ScrollView,
   FlatList,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -110,7 +111,7 @@ const DashboardScreen = ({ navigation, route }) => {
 
   return (
     <InternetConnectionAlert onChange={(connectionState) => {}}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StatusBar></StatusBar>
         <ProgressDialog visible={isloading} label={label} />
         <View style={styles.topBarContainer}>
@@ -215,7 +216,7 @@ const DashboardScreen = ({ navigation, route }) => {
             <View style={{ height: 20 }}></View>
           </ScrollView>
         </View>
-      </View>
+      </SafeAreaView>
     </InternetConnectionAlert>
   );
 };

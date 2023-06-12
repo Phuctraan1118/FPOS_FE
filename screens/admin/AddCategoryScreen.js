@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -94,7 +95,7 @@ const AddCategoryScreen = ({ navigation, route }) => {
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
       <ProgressDialog visible={isloading} label={"Adding ..."} />
-      <View style={styles.TopBarContainer}>
+      <SafeAreaView style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
             // navigation.replace("viewproduct", { authUser: authUser });
@@ -107,7 +108,7 @@ const AddCategoryScreen = ({ navigation, route }) => {
             color={colors.muted}
           />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <View style={styles.screenNameContainer}>
         <View>
           <Text style={styles.screenNameText}>Add Category</Text>
