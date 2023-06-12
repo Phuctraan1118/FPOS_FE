@@ -6,6 +6,7 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   ScrollView,
+  Dimensions,
 } from "react-native";
 
 import React, { useState } from "react";
@@ -14,10 +15,13 @@ import CustomInput from "../../components/CustomInput";
 import header_logo from "../../assets/logo/logo.png";
 import CustomButton from "../../components/CustomButton";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
+import IgBackground from "../../components/Login/Background";
+import InputBox from "../../components/Login/InputBox";
 import ProgressDialog from "react-native-progress-dialog";
 import InternetConnectionAlert from "react-native-internet-connection-alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+const windowWidth = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -115,19 +119,11 @@ const LoginScreen = ({ navigation }) => {
         <ScrollView style={{ flex: 1, width: "100%" }}>
           <ProgressDialog visible={isloading} label={"Login ..."} />
           <StatusBar></StatusBar>
-          <View style={styles.welconeContainer}>
-            <View>
-              <Text style={styles.welcomeText}>Hi !!! Jardo</Text>
-              <Text style={styles.welcomeParagraph}>
-                make your ecommerce easy
-              </Text>
-            </View>
-            <View>
-              <Image style={styles.logo} source={header_logo} />
-            </View>
+          <View style={styles.backgroundImage}>
+            <IgBackground></IgBackground>
           </View>
           <View style={styles.screenNameContainer}>
-            <Text style={styles.screenNameText}>Login</Text>
+            <Text style={styles.screenNameText}>Login to your account</Text>
           </View>
           <View style={styles.formContainer}>
             <CustomAlert message={error} type={"error"} />
@@ -151,7 +147,7 @@ const LoginScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate("forgetpassword")}
                 style={styles.ForgetText}
               >
-                Forget Password?
+                Forgot Password?
               </Text>
             </View>
           </View>
@@ -168,6 +164,9 @@ const LoginScreen = ({ navigation }) => {
             signup
           </Text>
         </View>
+        <View style={styles.footerContainer}>
+          <Text>Copyright 2023. All rights reserved.</Text>
+        </View>
       </KeyboardAvoidingView>
     </InternetConnectionAlert>
   );
@@ -182,8 +181,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
     flex: 1,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "contain",
+    width: windowWidth,
+    height: height / 3,
+    marginTop: 30,
   },
   welconeContainer: {
     width: "100%",
@@ -192,7 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     height: "30%",
-    // padding:15
+    
   },
   formContainer: {
     flex: 3,
@@ -222,7 +227,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
   },
   ForgetText: {
@@ -232,10 +237,11 @@ const styles = StyleSheet.create({
   buttomContainer: {
     display: "flex",
     justifyContent: "center",
-    width: "100%",
+    width: "80%",
   },
   bottomContainer: {
     marginTop: 10,
+    paddingBottom :160,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
@@ -251,12 +257,21 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent:"center",
     alignItems: "center",
   },
   screenNameText: {
     fontSize: 30,
-    fontWeight: "800",
+    fontWeight: "500",
     color: colors.muted,
+    textAlign: "center",
+    
   },
+  footerContainer:{
+    marginTop: 10,
+    paddingBottom: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  }
 });
