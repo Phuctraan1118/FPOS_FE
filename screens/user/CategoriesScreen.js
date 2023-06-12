@@ -8,6 +8,7 @@ import {
   FlatList,
   RefreshControl,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
@@ -126,7 +127,7 @@ const CategoriesScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <View style={styles.topBarContainer}>
         <TouchableOpacity
@@ -245,7 +246,7 @@ const CategoriesScreen = ({ navigation, route }) => {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

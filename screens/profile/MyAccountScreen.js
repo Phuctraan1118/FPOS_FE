@@ -5,6 +5,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
@@ -60,7 +61,7 @@ const MyAccountScreen = ({ navigation, route }) => {
       .catch((error) => console.log("error", error));
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto"></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -105,7 +106,7 @@ const MyAccountScreen = ({ navigation, route }) => {
           onPress={() => showConfirmDialog(userID)}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

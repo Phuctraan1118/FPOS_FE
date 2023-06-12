@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -97,7 +98,7 @@ const MyOrderScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <ProgressDialog visible={isloading} label={label} />
       <View style={styles.topBarContainer}>
@@ -157,7 +158,7 @@ const MyOrderScreen = ({ navigation, route }) => {
           <View style={styles.emptyView}></View>
         </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   StatusBar,
   Text,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -54,7 +55,7 @@ const CartScreen = ({ navigation }) => {
   }, [cartproduct, refresh]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <View style={styles.topBarContainer}>
         <View style={styles.cartInfoContainerTopBar}>
@@ -145,7 +146,7 @@ const CartScreen = ({ navigation }) => {
           )}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

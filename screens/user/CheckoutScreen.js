@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
   Modal,
+  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
@@ -118,7 +119,7 @@ const CheckoutScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <ProgressDialog visible={isloading} label={"Placing Order..."} />
       <View style={styles.topBarContainer}>
@@ -246,7 +247,8 @@ const CheckoutScreen = ({ navigation, route }) => {
               setValue={setCity}
               placeholder={"Enter City"}
             />
-            <CustomInput style={styles.phd}
+            <CustomInput
+              style={styles.phd}
               value={streetAddress}
               setValue={setStreetAddress}
               placeholder={"Enter Street Address"}
@@ -276,7 +278,7 @@ const CheckoutScreen = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -382,7 +384,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 3,
   },
-  phd:{
+  phd: {
     color: colors.dark,
-  }
+  },
 });

@@ -4,6 +4,7 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import UserProfileCard from "../../components/UserProfileCard/UserProfileCard";
@@ -28,7 +29,7 @@ const UserProfileScreen = ({ navigation, route }) => {
     convertToJSON(user);
   }, []);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto"></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity>
@@ -80,7 +81,7 @@ const UserProfileScreen = ({ navigation, route }) => {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

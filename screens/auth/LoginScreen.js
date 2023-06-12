@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     height: "30%",
-    
   },
   formContainer: {
     flex: 3,
@@ -241,7 +240,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     marginTop: 10,
-    paddingBottom :160,
+    paddingBottom: 160,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
@@ -257,7 +256,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent:"center",
+    justifyContent: "center",
     alignItems: "center",
   },
   screenNameText: {
@@ -265,13 +264,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: colors.muted,
     textAlign: "center",
-    
   },
-  footerContainer:{
+  footerContainer: {
     marginTop: 10,
     paddingBottom: 20,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-  }
+  },
 });

@@ -8,6 +8,7 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
@@ -118,7 +119,7 @@ const HomeScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <View style={styles.topBarContainer}>
         <TouchableOpacity disabled>
@@ -271,7 +272,7 @@ const HomeScreen = ({ navigation, route }) => {
           )}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

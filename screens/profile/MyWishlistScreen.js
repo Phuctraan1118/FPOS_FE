@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -108,7 +109,7 @@ const MyWishlistScreen = ({ navigation, route }) => {
   }, [onWishlist]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <ProgressDialog visible={isloading} label={label} />
       <View style={styles.topBarContainer}>
@@ -173,7 +174,7 @@ const MyWishlistScreen = ({ navigation, route }) => {
           <View style={styles.emptyView}></View>
         </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

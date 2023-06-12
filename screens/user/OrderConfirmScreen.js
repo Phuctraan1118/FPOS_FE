@@ -1,4 +1,11 @@
-import { StyleSheet, Image, Text, View, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import SuccessImage from "../../assets/image/success.png";
 import CustomButton from "../../components/CustomButton";
@@ -21,7 +28,7 @@ const OrderConfirmScreen = ({ navigation }) => {
   //   }, 4000);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <View style={styles.imageConatiner}>
         <Image source={SuccessImage} style={styles.Image} />
@@ -33,7 +40,7 @@ const OrderConfirmScreen = ({ navigation }) => {
           onPress={() => navigation.replace("tab", { user: user })}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

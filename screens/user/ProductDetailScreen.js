@@ -5,6 +5,7 @@ import {
   View,
   StatusBar,
   Text,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -177,7 +178,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
   useEffect(() => {}, [wishlistItems]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
       <View style={styles.topBarContainer}>
         <TouchableOpacity
@@ -287,7 +288,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
