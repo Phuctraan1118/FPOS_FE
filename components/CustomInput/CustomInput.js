@@ -41,9 +41,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     padding: 5,
-    backgroundColor: colors.dark,
+    backgroundColor: colors.primary_light,
     elevation: 5,
     paddingHorizontal: 20,
-    color: colors.white,
+    color: colors.dark,
+    fontWeight: "500",
   },
 });

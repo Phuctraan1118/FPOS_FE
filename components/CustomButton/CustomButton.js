@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: colors.primary,
+    backgroundColor: "#FEFEFF",
   },
   buttonText: {
     fontWeight: "bold",
-    color: "#fff",
+    color: "#0A1C2A",
   },
   containerDisabled: {
     padding: 15,

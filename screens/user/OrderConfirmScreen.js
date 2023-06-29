@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import SuccessImage from "../../assets/image/success.png";
+import SuccessImage from "../../assets/image/complete-order.png";
 import CustomButton from "../../components/CustomButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -33,7 +33,7 @@ const OrderConfirmScreen = ({ navigation }) => {
       <View style={styles.imageConatiner}>
         <Image source={SuccessImage} style={styles.Image} />
       </View>
-      <Text style={styles.secondaryText}>Order has be confirmed</Text>
+      <Text style={styles.secondaryText}>Complete</Text>
       <View>
         <CustomButton
           text={"Back to Home"}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   secondaryText: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
   },
 });

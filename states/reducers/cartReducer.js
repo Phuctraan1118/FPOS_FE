@@ -12,7 +12,6 @@ const reducer = (state = [], action) => {
           } else {
             console.log("out of stock");
           }
-
           return state;
         }
       });

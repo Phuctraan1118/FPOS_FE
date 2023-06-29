@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
   SafeAreaView,
+  ImageBackground
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -27,6 +28,10 @@ const CartScreen = ({ navigation }) => {
     bindActionCreators(actionCreaters, dispatch);
   const [totalPrice, setTotalPrice] = useState(0);
   const [refresh, setRefresh] = useState(false);
+
+  const image = {
+    uri: "https://scontent.fvca1-1.fna.fbcdn.net/v/t1.15752-9/346104659_775955203919344_5780054629775945075_n.png?_nc_cat=105&ccb=1-7&_nc_sid=ae9488&_nc_ohc=GKxszT18zQIAX9B2tKR&_nc_ht=scontent.fvca1-1.fna&oh=03_AdQUFrziig1tgvGJ153iHzmrgzNdoe3zFy0X0xHbowueyw&oe=6491300C",
+  };
 
   const deleteItem = (id) => {
     removeCartItem(id);
@@ -118,33 +123,38 @@ const CartScreen = ({ navigation }) => {
         </ScrollView>
       )}
       <View style={styles.cartBottomContainer}>
-        <View style={styles.cartBottomLeftContainer}>
-          <View style={styles.IconContainer}>
-            <MaterialIcons
-              name="featured-play-list"
-              size={24}
-              color={colors.primary}
-            />
+        <ImageBackground
+          source={image}
+          resizeMode="cover"
+          style={styles.imageBackground}
+        >
+          <View style={styles.cartBottomInformation}>
+            <View>
+              <Text style={styles.cartBottomInformationText}>Sub-Total</Text>
+              <Text style={styles.cartBottomInformationText}>Discount</Text>
+              <Text style={styles.cartBottomInformationTextTotal}>Total</Text>
+            </View>
+            <View >
+              <Text style={styles.cartBottomInformationText}>{totalPrice} $</Text>
+              <Text style={styles.cartBottomInformationText}>-- $</Text>
+              <Text style={styles.cartBottomInformationTextTotal}>{totalPrice} $</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.cartBottomPrimaryText}>Total</Text>
-            <Text style={styles.cartBottomSecondaryText}>{totalPrice}$</Text>
+          <View style={styles.cartBottomButtonContainer}>
+            {cartproduct.length > 0 ? (
+              <CustomButton
+                text={"Checkout"}
+                onPress={() => navigation.navigate("checkout")}
+              />
+            ) : (
+              <CustomButton
+                text={"Checkout"}
+                disabled={true}
+                onPress={() => navigation.navigate("checkout")}
+              />
+            )}
           </View>
-        </View>
-        <View style={styles.cartBottomRightContainer}>
-          {cartproduct.length > 0 ? (
-            <CustomButton
-              text={"Checkout"}
-              onPress={() => navigation.navigate("checkout")}
-            />
-          ) : (
-            <CustomButton
-              text={"Checkout"}
-              disabled={true}
-              onPress={() => navigation.navigate("checkout")}
-            />
-          )}
-        </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -188,16 +198,14 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   cartBottomContainer: {
-    width: "100%",
-    height: 120,
-    display: "flex",
-    backgroundColor: colors.white,
+    width: "90%",
+    height: 200,
+    backgroundColor: '#0A1C2A',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     elevation: 3,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
   },
   cartBottomLeftContainer: {
     padding: 20,
@@ -249,5 +257,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     marginLeft: 5,
+  },
+  cartBottomInformation: {
+    padding: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    lineHeight: 36,
+  },
+  cartBottomInformationText: {
+    color: "#FEFEFF",
+    fontStyle: "italic",
+    lineHeight: 30
+  },
+  cartBottomInformationTextTotal: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    lineHeight: 30
   },
 });

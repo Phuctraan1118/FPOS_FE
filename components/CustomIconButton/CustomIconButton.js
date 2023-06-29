@@ -11,7 +11,7 @@ const CustomIconButton = ({ text, image, onPress, active }) => {
       ]}
       onPress={onPress}
     >
-      <Image source={image} style={styles.buttonIcon} />
+      
       <Text
         style={[
           styles.buttonText,

@@ -36,7 +36,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
   const [onWishlist, setOnWishlist] = useState(false);
   const [avaiableQuantity, setAvaiableQuantity] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [productImage, SetProductImage] = useState(" ");
   const [wishlistItems, setWishlistItems] = useState([]);
   const [error, setError] = useState("");
@@ -169,7 +169,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    setQuantity(0);
+    setQuantity(1);
     setAvaiableQuantity(product.quantity);
     SetProductImage(`${network.serverip}/uploads/${product?.image}`);
     fetchWishlist();
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    backgroundColor: colors.light,
+    backgroundColor: "#0A1C2A",
     width: "100%",
     height: 140,
     borderTopLeftRadius: 25,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingLeft: 40,
     paddingRight: 40,
-    backgroundColor: colors.white,
+    backgroundColor: "#0A1C2A",
     width: "100%",
     height: 100,
     borderTopLeftRadius: 25,
@@ -481,6 +481,7 @@ const styles = StyleSheet.create({
   counterCountText: {
     fontSize: 20,
     fontWeight: "bold",
+    color: colors.white
   },
   cartIconContainer: {
     display: "flex",

@@ -120,11 +120,11 @@ const MyOrderScreen = ({ navigation, route }) => {
       </View>
       <View style={styles.screenNameContainer}>
         <View>
-          <Text style={styles.screenNameText}>My Orders</Text>
+          <Text style={styles.screenNameText}>Customer Orders</Text>
         </View>
         <View>
           <Text style={styles.screenNameParagraph}>
-            Your order and your order status
+            Customer order and Customer order status
           </Text>
         </View>
       </View>

@@ -29,18 +29,16 @@ import BannerCodeScanner from "./BannerCodeScanner";
 
 const category = [
   {
-    _id: "6485572cdb3b9bfb1429fb89",
-    title: "Nước giải khát",
-    image: require("../../assets/icons/men.png"),
+    _id: "6417d1fef4a14efc88c07fda",
+    title: "Shampoo",
   },
   {
     _id: "6417d212f4a14efc88c07fdd",
-    title: "Women",
-    image: require("../../assets/icons/women.png"),
+    title: "Drinks",
   },
   {
     _id: "6417d21af4a14efc88c07fe0",
-    title: "Kids",
+    title: "Wines",
   },
 ];
 
@@ -109,6 +107,7 @@ const HomeScreen = ({ navigation, route }) => {
               ...cat,
               id: ++index,
               name: cat.title,
+              code: cat.code
             };
             payload.push(searchableItem);
           });

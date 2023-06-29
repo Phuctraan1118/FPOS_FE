@@ -27,7 +27,7 @@ const MyOrderDetailScreen = ({ navigation, route }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [statusDisable, setStatusDisable] = useState(false);
-  const labels = ["Processing", "Shipping", "Delivery"];
+  const labels = ["Processing", "Submitted Order", "Paid"];
   const [trackingState, setTrackingState] = useState(1);
   const customStyles = {
     stepIndicatorSize: 25,
@@ -128,7 +128,7 @@ const MyOrderDetailScreen = ({ navigation, route }) => {
       </View>
       <View style={styles.screenNameContainer}>
         <View>
-          <Text style={styles.screenNameText}>Order Detials</Text>
+          <Text style={styles.screenNameText}>Order Details</Text>
         </View>
         <View>
           <Text style={styles.screenNameParagraph}>
@@ -143,7 +143,7 @@ const MyOrderDetailScreen = ({ navigation, route }) => {
       >
         <View style={styles.containerNameContainer}>
           <View>
-            <Text style={styles.containerNameText}>Shipping Address</Text>
+            <Text style={styles.containerNameText}>Customer Information</Text>
           </View>
         </View>
         <View style={styles.ShipingInfoContainer}>
@@ -238,6 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginLeft: 30
   },
 
   screenNameContainer: {
@@ -248,6 +249,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     marginBottom: 5,
+    paddingLeft: 20
   },
   screenNameText: {
     fontSize: 30,
@@ -257,6 +259,7 @@ const styles = StyleSheet.create({
   screenNameParagraph: {
     marginTop: 10,
     fontSize: 15,
+    paddingLeft: 10,
   },
   bodyContainer: { flex: 1, width: "100%", padding: 5 },
   ShipingInfoContainer: {

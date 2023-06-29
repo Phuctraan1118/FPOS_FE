@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.muted,
-    borderRadius: 15,
+    backgroundColor: '#0A1C2A',
+    borderRadius: 8,
     elevation: 2,
   },
   counterButtonText: {
