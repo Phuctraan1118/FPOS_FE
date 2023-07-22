@@ -1,13 +1,3 @@
 {
-  "hostType": "lan",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-<<<<<<< Updated upstream
-  "urlRandomness": "RHHhrss",
-=======
-  "urlRandomness": "WOrVZZA",
->>>>>>> Stashed changes
-  "https": false,
-  "scheme": null
+  "urlRandomness": null
 }

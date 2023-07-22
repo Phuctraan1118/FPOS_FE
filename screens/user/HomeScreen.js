@@ -72,9 +72,20 @@ const HomeScreen = ({ navigation, route }) => {
     }
   };
   const performSearch = (searchValue) => {
-    // Thực hiện tìm kiếm với giá trị searchValue
-    console.log("Performing search with:", searchValue);
-    // ...
+    if (searchValue !== "") {
+      const filteredItems = products.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+          (item.code &&
+            item.code.toLowerCase().includes(searchValue.toLowerCase()) &&
+            handleProductPress(item))
+      );
+      console.log(filteredItems);
+
+      setFilteredProducts(filteredItems);
+    } else {
+      setFilteredProducts([]);
+    }
   };
   const handleScanned = (data) => {
     setModalVisible(false);
@@ -82,6 +93,7 @@ const HomeScreen = ({ navigation, route }) => {
     performSearch(data); // Gọi hàm tìm kiếm với giá trị quét
   };
   const handleProductPress = (product) => {
+    console.log(product);
     navigation.navigate("productdetail", { product: product });
   };
 
