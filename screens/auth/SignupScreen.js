@@ -76,7 +76,7 @@ const SignupScreen = ({ navigation }) => {
   return (
     <InternetConnectionAlert
       onChange={(connectionState) => {
-        console.log("Connection State: ", connectionState);
+        console.log("Connection State: ", connectionState.details.ipAddress);
       }}
     >
       <KeyboardAvoidingView style={styles.container}>

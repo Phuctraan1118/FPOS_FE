@@ -11,6 +11,7 @@ import {
   Modal,
   Pressable,
   SafeAreaView,
+  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
@@ -26,7 +27,8 @@ import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { SliderBox } from "react-native-image-slider-box";
 import BannerCodeScanner from "./BannerCodeScanner";
-
+import { WebView } from "react-native-webview";
+import { Box } from "native-base";
 const category = [
   {
     _id: "6485572cdb3b9bfb1429fb89",
@@ -65,7 +67,10 @@ const HomeScreen = ({ navigation, route }) => {
   const [scannedData, setScannedData] = useState("");
   const [autoSearch, setAutoSearch] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [modalVisiblee, setModalVisiblee] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState("Pending");
+  const [payment, setPayment] = useState(false);
   const convertToJSON = (obj) => {
     try {
       setUserInfo(JSON.parse(obj));
@@ -73,6 +78,10 @@ const HomeScreen = ({ navigation, route }) => {
       setUserInfo(obj);
     }
   };
+  let userPayment = payment;
+
+  console.log(userPayment);
+  const uID = user["_id"];
   const performSearch = (searchValue) => {
     if (searchValue !== "") {
       const filteredItems = products.filter(
@@ -135,12 +144,23 @@ const HomeScreen = ({ navigation, route }) => {
       });
   };
 
+  const updatePayment = () => {
+    console.log(uID);
+    setError("");
+    fetch(network.serverip + "/update-user?id=" + String(uID), requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        navigation.goBack();
+      })
+      .catch((error) => console.log("error", setError(error.message)));
+  };
+
   const handleOnRefresh = () => {
     setRefreshing(true);
     fetchProduct();
     setRefreshing(false);
   };
-
   useEffect(() => {
     convertToJSON(user);
     fetchProduct();
@@ -164,10 +184,21 @@ const HomeScreen = ({ navigation, route }) => {
     }
   }, [scannedData, autoSearch]);
   const [modalVisible, setModalVisible] = useState(false);
+  const runFirst = `window.ReactNativeWebView.postMessage("True");`;
 
+  const handlePress = () => {
+    setPayment(true);
+  };
+  const handleModal = () => {
+    setShowModal(false);
+  };
+  function onMessage(data) {
+    console.log("data webview", data.nativeEvent.data);
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar></StatusBar>
+
       <View style={styles.topBarContainer}>
         <TouchableOpacity disabled>
           <Ionicons name="menu" size={30} color={colors.muted} />
@@ -190,165 +221,228 @@ const HomeScreen = ({ navigation, route }) => {
           <Image source={cartIcon} />
         </TouchableOpacity>
       </View>
-      <View style={styles.bodyContainer}>
-        <View style={styles.searchContainer}>
-          <View style={styles.inputContainer}>
-            <SearchableDropdown
-              onTextChange={(text) => {
-                setScannedData(text); // Cập nhật giá trị quét
-                performSearch(text); // Gọi hàm tìm kiếm khi giá trị quét thay đổi
-              }}
-              onItemSelect={(item) => handleProductPress(item)}
-              defaultIndex={0}
-              containerStyle={{
-                borderRadius: 5,
-                width: "100%",
-                elevation: 5,
-                position: "absolute",
-                zIndex: 20,
-                top: -3,
-                maxHeight: 300,
-                backgroundColor: colors.light,
-              }}
-              textInputStyle={{
-                borderRadius: 10,
-                padding: 6,
-                paddingLeft: 10,
-                borderWidth: 0,
-                backgroundColor: colors.white,
-              }}
-              itemStyle={{
-                padding: 10,
-                marginTop: 2,
-                backgroundColor: colors.white,
-                borderColor: colors.muted,
-              }}
-              itemTextStyle={{
-                color: colors.muted,
-              }}
-              itemsContainerStyle={{
-                maxHeight: "100%",
-              }}
-              items={searchItems}
-              placeholder={scannedData !== "" ? scannedData : "Search..."}
-              resetValue={false}
-              underlineColorAndroid="transparent"
-              defaultInputValue={scannedData !== "" ? scannedData : "Hello"} // Đặt giá trị quét vào ô tìm kiếm
-            />
-            {/* <CustomInput radius={5} placeholder={"Search...."} /> */}
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.scanButton}>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert("Modal has been closed.");
-                  setModalVisible(!modalVisible);
+      {userPayment === true ? (
+        <View style={styles.bodyContainer}>
+          <View style={styles.searchContainer}>
+            <View style={styles.inputContainer}>
+              <SearchableDropdown
+                onTextChange={(text) => {
+                  setScannedData(text); // Cập nhật giá trị quét
+                  performSearch(text); // Gọi hàm tìm kiếm khi giá trị quét thay đổi
                 }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <BannerCodeScanner onScanned={handleScanned} />
-                    <Pressable
-                      style={styles.buttonClose}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>Close</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </Modal>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
-              >
-                <Text style={styles.textStyle}>Scan</Text>
-              </Pressable>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <ScrollView nestedScrollEnabled={true}>
-          <View style={styles.promotiomSliderContainer}>
-            <SliderBox
-              images={slides}
-              sliderBoxHeight={140}
-              dotColor={colors.primary}
-              inactiveDotColor={colors.muted}
-              paginationBoxVerticalPadding={10}
-              autoplayInterval={6000}
-            />
-          </View>
-          <View style={styles.primaryTextContainer}>
-            <Text style={styles.primaryText}>Categories</Text>
-          </View>
-          <View style={styles.categoryContainer}>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              style={styles.flatListContainer}
-              horizontal={true}
-              data={category}
-              keyExtractor={(item, index) => `${item}-${index}`}
-              renderItem={({ item, index }) => (
-                <View style={{ marginBottom: 10 }} key={index}>
-                  <CustomIconButton
-                    key={index}
-                    text={item.title}
-                    image={item.image}
-                    onPress={() =>
-                      navigation.jumpTo("categories", { categoryID: item })
-                    }
-                  />
-                </View>
-              )}
-            />
-            <View style={styles.emptyView}></View>
-          </View>
-          <View style={styles.primaryTextContainer}>
-            <Text style={styles.primaryText}>New Arrivals</Text>
-          </View>
-          {products.length === 0 ? (
-            <View style={styles.productCardContainerEmpty}>
-              <Text style={styles.productCardContainerEmptyText}>
-                No Product
-              </Text>
+                onItemSelect={(item) => handleProductPress(item)}
+                defaultIndex={0}
+                containerStyle={{
+                  borderRadius: 5,
+                  width: "100%",
+                  elevation: 5,
+                  position: "absolute",
+                  zIndex: 20,
+                  top: -3,
+                  maxHeight: 300,
+                  backgroundColor: colors.light,
+                }}
+                textInputStyle={{
+                  borderRadius: 10,
+                  padding: 6,
+                  paddingLeft: 10,
+                  borderWidth: 0,
+                  backgroundColor: colors.white,
+                }}
+                itemStyle={{
+                  padding: 10,
+                  marginTop: 2,
+                  backgroundColor: colors.white,
+                  borderColor: colors.muted,
+                }}
+                itemTextStyle={{
+                  color: colors.muted,
+                }}
+                itemsContainerStyle={{
+                  maxHeight: "100%",
+                }}
+                items={searchItems}
+                placeholder={scannedData !== "" ? scannedData : "Search..."}
+                resetValue={false}
+                underlineColorAndroid="transparent"
+                defaultInputValue={scannedData !== "" ? scannedData : "Hello"} // Đặt giá trị quét vào ô tìm kiếm
+              />
+              {/* <CustomInput radius={5} placeholder={"Search...."} /> */}
             </View>
-          ) : (
-            <View style={styles.productCardContainer}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.scanButton}>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <BannerCodeScanner onScanned={handleScanned} />
+                      <Pressable
+                        style={styles.buttonClose}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>Close</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+                <Pressable
+                  style={[styles.button, styles.buttonOpen]}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Text style={styles.textStyle}>Scan</Text>
+                </Pressable>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <ScrollView nestedScrollEnabled={true}>
+            <View style={styles.promotiomSliderContainer}>
+              <SliderBox
+                images={slides}
+                sliderBoxHeight={140}
+                dotColor={colors.primary}
+                inactiveDotColor={colors.muted}
+                paginationBoxVerticalPadding={10}
+                autoplayInterval={6000}
+              />
+            </View>
+            <View style={styles.primaryTextContainer}>
+              <Text style={styles.primaryText}>Categories</Text>
+            </View>
+            <View style={styles.categoryContainer}>
               <FlatList
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refeshing}
-                    onRefresh={handleOnRefresh}
-                  />
-                }
                 showsHorizontalScrollIndicator={false}
-                initialNumToRender={5}
+                style={styles.flatListContainer}
                 horizontal={true}
-                data={products.slice(0, 4)}
-                keyExtractor={(item) => item._id}
+                data={category}
+                keyExtractor={(item, index) => `${item}-${index}`}
                 renderItem={({ item, index }) => (
-                  <View
-                    key={item._id}
-                    style={{ marginLeft: 5, marginBottom: 10, marginRight: 5 }}
-                  >
-                    <ProductCard
-                      name={item.title}
-                      image={`${network.serverip}/uploads/${item.image}`}
-                      price={item.price}
-                      quantity={item.quantity}
-                      onPress={() => handleProductPress(item)}
-                      onPressSecondary={() => handleAddToCat(item)}
+                  <View style={{ marginBottom: 10 }} key={index}>
+                    <CustomIconButton
+                      key={index}
+                      text={item.title}
+                      image={item.image}
+                      onPress={() =>
+                        navigation.jumpTo("categories", { categoryID: item })
+                      }
                     />
                   </View>
                 )}
               />
               <View style={styles.emptyView}></View>
             </View>
-          )}
-        </ScrollView>
-      </View>
+            <View style={styles.primaryTextContainer}>
+              <Text style={styles.primaryText}>New Arrivals</Text>
+            </View>
+            {products.length === 0 ? (
+              <View style={styles.productCardContainerEmpty}>
+                <Text style={styles.productCardContainerEmptyText}>
+                  No Product
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.productCardContainer}>
+                <FlatList
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refeshing}
+                      onRefresh={handleOnRefresh}
+                    />
+                  }
+                  showsHorizontalScrollIndicator={false}
+                  initialNumToRender={5}
+                  horizontal={true}
+                  data={products.slice(0, 4)}
+                  keyExtractor={(item) => item._id}
+                  renderItem={({ item, index }) => (
+                    <View
+                      key={item._id}
+                      style={{
+                        marginLeft: 5,
+                        marginBottom: 10,
+                        marginRight: 5,
+                      }}
+                    >
+                      <ProductCard
+                        name={item.title}
+                        image={`${network.serverip}/uploads/${item.image}`}
+                        price={item.price}
+                        quantity={item.quantity}
+                        onPress={() => handleProductPress(item)}
+                        onPressSecondary={() => handleAddToCat(item)}
+                      />
+                    </View>
+                  )}
+                />
+                <View style={styles.emptyView}></View>
+              </View>
+            )}
+          </ScrollView>
+        </View>
+      ) : (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisiblee}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisiblee(!modalVisiblee);
+          }}
+        >
+          <View
+            image={require("../../assets/image/banners/banner.png")}
+            style={[styles.centeredVieww]}
+          >
+            <View style={styles.modalVieww}>
+              <Image
+                source={require("../../assets/image/30days.png")}
+                style={{ width: "100%", height: "94%" }}
+              />
+              <View>
+                <Modal
+                  visible={showModal}
+                  onRequestClose={() => setShowModal(false)}
+                >
+                  <View>
+                    <TouchableOpacity
+                      style={{ marginTop: 40 }}
+                      onPress={handleModal}
+                    >
+                      <Button onPress={() => handleModal} title="Close">
+                        Close
+                      </Button>
+                    </TouchableOpacity>
+                  </View>
+
+                  <WebView
+                    style={{ height: "90%" }}
+                    source={{ uri: `${network.serverip}/paypal` }}
+                    startInLoadingState={true}
+                    scalesPageToFit={false}
+                    mixedContentMode="compatibility"
+                  />
+                </Modal>
+                <TouchableOpacity onPress={() => setShowModal(true)}>
+                  <Button onPress={() => setShowModal(true)} title="Payment">
+                    Paypal
+                  </Button>
+                  <TouchableOpacity onPress={handlePress}>
+                    <Text style={{ color: "white", marginTop: 40 }}>
+                      Success
+                    </Text>
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 };
@@ -356,6 +450,47 @@ const HomeScreen = ({ navigation, route }) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  centeredVieww: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalVieww: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height: "80%",
+    width: "80%",
+  },
+  buttonn: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpenn: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClosee: {
+    backgroundColor: "#2196F3",
+  },
+  textStylee: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalTextt: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
   container: {
     width: "100%",
     flexDirecion: "row",
