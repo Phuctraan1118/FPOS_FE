@@ -28,7 +28,8 @@ import SearchableDropdown from "react-native-searchable-dropdown";
 import { SliderBox } from "react-native-image-slider-box";
 import BannerCodeScanner from "./BannerCodeScanner";
 import { WebView } from "react-native-webview";
-import { Box } from "native-base";
+import { Alert, Box, Switch } from "native-base";
+import axios from "axios";
 const category = [
   {
     _id: "6485572cdb3b9bfb1429fb89",
@@ -71,6 +72,8 @@ const HomeScreen = ({ navigation, route }) => {
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState("Pending");
   const [payment, setPayment] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(false);
+  const [userPayment, setuserPayment] = useState(false);
   const convertToJSON = (obj) => {
     try {
       setUserInfo(JSON.parse(obj));
@@ -78,7 +81,6 @@ const HomeScreen = ({ navigation, route }) => {
       setUserInfo(obj);
     }
   };
-  let userPayment = payment;
 
   console.log(userPayment);
   const uID = user["_id"];
@@ -144,16 +146,50 @@ const HomeScreen = ({ navigation, route }) => {
       });
   };
 
-  const updatePayment = () => {
-    console.log(uID);
-    setError("");
-    fetch(network.serverip + "/update-user?id=" + String(uID), requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        navigation.goBack();
-      })
-      .catch((error) => console.log("error", setError(error.message)));
+  const handleUpdatePayment = async () => {
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ payment: true }),
+      };
+
+      const response = await fetch(
+        `${network.serverip}/update-user?id=${uID}`,
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      if (data.success === true) {
+        console.log("Cap nhat thanh cong", uID);
+        setuserPayment(true);
+        // Xử lý thành công, có thể làm gì đó ở đây (ví dụ: cập nhật giao diện, hiển thị thông báo, vv.)
+      } else {
+        Alert.alert("Error", data.message);
+        // Xử lý lỗi, có thể hiển thị thông báo lỗi hoặc xử lý dữ liệu một cách phù hợp
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const testFetch = async () => {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts/1"
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Fetch test error:", error);
+    }
   };
 
   const handleOnRefresh = () => {
@@ -164,6 +200,7 @@ const HomeScreen = ({ navigation, route }) => {
   useEffect(() => {
     convertToJSON(user);
     fetchProduct();
+    setuserPayment(user["payment"]);
   }, []);
   useEffect(() => {
     if (autoSearch && scannedData !== "") {
@@ -185,10 +222,6 @@ const HomeScreen = ({ navigation, route }) => {
   }, [scannedData, autoSearch]);
   const [modalVisible, setModalVisible] = useState(false);
   const runFirst = `window.ReactNativeWebView.postMessage("True");`;
-
-  const handlePress = () => {
-    setPayment(true);
-  };
   const handleModal = () => {
     setShowModal(false);
   };
@@ -414,7 +447,7 @@ const HomeScreen = ({ navigation, route }) => {
                       style={{ marginTop: 40 }}
                       onPress={handleModal}
                     >
-                      <Button onPress={() => handleModal} title="Close">
+                      <Button onPress={() => setShowModal(false)} title="Close">
                         Close
                       </Button>
                     </TouchableOpacity>
@@ -432,11 +465,10 @@ const HomeScreen = ({ navigation, route }) => {
                   <Button onPress={() => setShowModal(true)} title="Payment">
                     Paypal
                   </Button>
-                  <TouchableOpacity onPress={handlePress}>
-                    <Text style={{ color: "white", marginTop: 40 }}>
-                      Success
-                    </Text>
-                  </TouchableOpacity>
+                  <Button
+                    title="Update Payment"
+                    onPress={handleUpdatePayment}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
